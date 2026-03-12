@@ -365,7 +365,6 @@ Various types of hooks supported are :
 
 Webpack applies configuration defaults after plugins defaults are applied. This allows plugins to feature their own defaults and provides a way to create configuration preset plugins.
 
-
 ### Example: AssetLoggerPlugin
 
 The following example shows a minimal Webpack plugin that logs all generated assets during compilation.
@@ -375,10 +374,9 @@ class AssetLoggerPlugin {
   apply(compiler) {
     compiler.hooks.emit.tap("AssetLoggerPlugin", (compilation) => {
       console.log("Generated assets:");
-
-      Object.keys(compilation.assets).forEach((assetName) => {
+      for (const assetName of Object.keys(compilation.assets)) {
         console.log(assetName);
-      });
+      }
     });
   }
 }
