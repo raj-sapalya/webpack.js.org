@@ -340,19 +340,16 @@ module.exports = WatchNotifierPlugin;
 If your plugin reads external files (config files, templates, etc.)
 that webpack does not track by default, you must tell webpack to watch them.
 
-The `compilation.fileDependencies` set allows you to add such files.
+The `compilation.fileDependencies` set allows you to add files that your plugin depends on, so webpack can trigger a rebuild when those files change.
 
-In addition to individual files, you can also tell webpack to watch
-directories and files that do not yet exist:
+You can also extend this behavior to other types of dependencies:
 
-- `compilation.contextDependencies` is used to watch directories so that
-  any change inside them triggers a rebuild
+- `compilation.contextDependencies` is used to watch directories, so any change inside them triggers a rebuild
 
-- `compilation.missingDependencies` is used to track files that are currently missing,
-  so webpack can trigger a rebuild when they are created
+- `compilation.missingDependencies` is used to track files that are currently missing, so webpack can trigger a rebuild when they are created
 
 ```js
-const path = require("node:path");
+import path from "node:path";
 
 class TemplateWatchPlugin {
   apply(compiler) {
@@ -373,7 +370,7 @@ class TemplateWatchPlugin {
   }
 }
 
-module.exports = TemplateWatchPlugin;
+export default TemplateWatchPlugin;
 ```
 
 Without calling `fileDependencies.add()`, webpack will not trigger
