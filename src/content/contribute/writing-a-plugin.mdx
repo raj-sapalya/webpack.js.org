@@ -314,11 +314,11 @@ This is useful for plugins that need to react only to specific file changes
 ```js
 class WatchNotifierPlugin {
   apply(compiler) {
-    compiler.hooks.watchRun.tap('WatchNotifierPlugin', (compiler) => {
+    compiler.hooks.watchRun.tap("WatchNotifierPlugin", (compiler) => {
       if (compiler.modifiedFiles) {
-        const changedFiles = Array.from(compiler.modifiedFiles)
+        const changedFiles = [...compiler.modifiedFiles]
           .map((file) => `  • ${file}`)
-          .join('\n');
+          .join("\n");
 
         console.log(`\nFiles changed:\n${changedFiles}`);
       }
@@ -328,7 +328,9 @@ class WatchNotifierPlugin {
 
 module.exports = WatchNotifierPlugin;
 ```
+
 > **Note**:
+>
 > - `compiler.modifiedFiles` is a `Set`, not an array
 > - It is `undefined` on the first (cold) build
 > - It is only populated during watch rebuilds
@@ -341,12 +343,12 @@ that webpack does not track by default, you must tell webpack to watch them.
 The `compilation.fileDependencies` set allows you to add such files.
 
 ```js
-const path = require('path');
+const path = require("node:path");
 
 class TemplateWatchPlugin {
   apply(compiler) {
-    compiler.hooks.compilation.tap('TemplateWatchPlugin', (compilation) => {
-      const templatePath = path.resolve(__dirname, 'my-template.html');
+    compiler.hooks.compilation.tap("TemplateWatchPlugin", (compilation) => {
+      const templatePath = path.resolve(__dirname, "my-template.html");
 
       // Ensure webpack watches this file
       compilation.fileDependencies.add(templatePath);
@@ -356,6 +358,7 @@ class TemplateWatchPlugin {
 
 module.exports = TemplateWatchPlugin;
 ```
+
 Without calling `fileDependencies.add()`, webpack will not trigger
 a rebuild when the file changes — even if your plugin depends on it.
 
