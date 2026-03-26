@@ -342,6 +342,11 @@ that webpack does not track by default, you must tell webpack to watch them.
 
 The `compilation.fileDependencies` set allows you to add such files.
 
+You can also watch directories and even files that do not yet exist:
+
+- `compilation.contextDependencies` → for directories
+- `compilation.missingDependencies` → for future files
+
 ```js
 const path = require("node:path");
 
@@ -352,6 +357,14 @@ class TemplateWatchPlugin {
 
       // Ensure webpack watches this file
       compilation.fileDependencies.add(templatePath);
+
+      // Watch a directory (context dependency)
+      const templatesDir = path.resolve(__dirname, "templates");
+      compilation.contextDependencies.add(templatesDir);
+
+      // Example: mark a missing dependency
+      const missingFile = path.resolve(__dirname, "missing-file.txt");
+      compilation.missingDependencies.add(missingFile);
     });
   }
 }
