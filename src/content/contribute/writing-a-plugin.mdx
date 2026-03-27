@@ -302,8 +302,8 @@ T> The [`processAssets`](/api/compilation-hooks/#processassets) hook also suppor
 
 ## Watching for file changes
 
-When webpack runs in watch mode (`webpack --watch` or `devServer`),
-Webpack creates a new compilation for each rebuild triggered by file changes.
+When webpack runs in watch mode (`webpack --watch` or `webpack serve`),
+it creates a new compilation for each rebuild triggered by file changes.
 
 The `compiler.modifiedFiles` Set lets your plugin know **which specific
 files triggered the rebuild**, so you can skip expensive work for unrelated files.
@@ -326,7 +326,7 @@ class WatchNotifierPlugin {
   }
 }
 
-module.exports = WatchNotifierPlugin;
+export default WatchNotifierPlugin;
 ```
 
 > **Note**:
@@ -340,9 +340,9 @@ module.exports = WatchNotifierPlugin;
 If your plugin reads external files (config files, templates, etc.)
 that webpack does not track by default, you must tell webpack to watch them.
 
-The `compilation.fileDependencies` set allows you to add files that your plugin depends on, so webpack can trigger a rebuild when those files change.
+You can tell webpack to watch different types of dependencies:
 
-You can also extend this behavior to other types of dependencies:
+- `compilation.fileDependencies` is used to track individual files that your plugin depends on, so webpack can trigger a rebuild when those files change
 
 - `compilation.contextDependencies` is used to watch directories, so any change inside them triggers a rebuild
 
