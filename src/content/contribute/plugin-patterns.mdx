@@ -96,11 +96,11 @@ W> Since webpack 5, `compilation.fileDependencies`, `compilation.contextDependen
 
 Similar to the watch graph, you can monitor changed chunks within a compilation by tracking their content hashes.
 
-W> In webpack 5, `compilation.chunks` is a `Set`, not an array.
-Calling `.filter()` or `.map()` directly on it throws a `TypeError`.
+W> `compilation.chunks` is a `Set`, not an array. Calling `.filter()` or `.map()` directly on it throws a `TypeError`. 
 Use `for...of` or spread it into an array first.
 
-W> `chunk.hash` was removed in webpack 5. Use `chunk.contentHash.javascript` instead. Using the old property returns `undefined`, causing every chunk to appear changed on every rebuild.
+W> `chunk.hash` is not defined on chunk objects. Use `chunk.contentHash.javascript` instead. 
+Accessing `chunk.hash` returns `undefined`, causing every chunk to appear changed on every rebuild.
 
 ```js
 class MyPlugin {
